@@ -8,6 +8,9 @@ const { API_URL, PRIVATE_KEY } = process.env;
 module.exports = {
   solidity: "0.8.17",
   defaultNetwork: "goerli", 
+  // paths: {
+  //   artifacts: "./src/artifacts"
+  // },
   networks: {
     hardhat: {},
     goerli: {
