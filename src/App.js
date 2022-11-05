@@ -1,35 +1,45 @@
 import './App.css';
-// import { ethers } from 'ethers'
-// import house from './artifacts/contracts/BettingApp.sol/House.json'
-
-// const { API_KEY, PRIVATE_KEY, HOUSE_CONTRACT_ADDRESS } = process.env;
-// // const { ethers } = require("hardhat");
-// // const contract = require("./artifacts/contracts/BettingApp.sol/House.json");
-// const alchemyProvider = new ethers.providers.AlchemyProvider("goerli", API_KEY);
-// const signer = new ethers.Wallet(PRIVATE_KEY, alchemyProvider)
-// const houseContract = new ethers.Contract(HOUSE_CONTRACT_ADDRESS, house.abi, signer)
+import { useEffect, useState } from "react";
+import Bet from './Bet';
 
 function App() {
+    const { ethereum } = window
+    const [accounts, setAccounts] = useState([])
+    const [currentGames, setCurrentGames] = useState([])
 
-  // const test = () => {
-  //   houseContract.getBalance()
-  // }
+    useEffect(() => {
+        fetch("https://api.the-odds-api.com/v4/sports/basketball_nba/odds/?regions=us&oddsFormat=american&apiKey=193987230a67a854137fc1ce94335ee4")
+        .then((response) => response.json())
+        .then((data) => setCurrentGames(data));
+    }, [])
 
-  return (
-    <div className="App">
-      {/* <div id='test'>words</div>
-      <button onClick={test}>TEST</button> */}
+    const enable = async () => {
+        const acc = await ethereum.request({ method: 'eth_requestAccounts'})
+        setAccounts(acc)
+    }
 
-
-      {/* <form>
-        <label>
-          Test:
-          <input type="text" name="test"/>
-        </label>
-        <input type="submit" value="Submit"/>
-      </form> */}
-    </div>
-  );
+    return (
+        <div className="App">
+            {window.ethereum === undefined ? 
+                <div>install metamask</div> :
+                <>
+                    { !accounts[0] &&
+                        <button className="text-xl border-2 border-black" onClick={enable}>enable metamask</button>
+                    }
+                    {currentGames.map((item, i) => (
+                        <Bet
+                            key={i}
+                            accounts={accounts}
+                            team1={item.bookmakers[0].markets[0].outcomes[0].name} 
+                            team1ML={item.bookmakers[0].markets[0].outcomes[0].price}
+                            team2={item.bookmakers[0].markets[0].outcomes[1].name}
+                            team2ML={item.bookmakers[0].markets[0].outcomes[1].price}>
+                        </Bet>
+                    ))}
+                </>                
+            }
+        </div>
+    );
 }
 
 export default App;

@@ -2,6 +2,8 @@
 
 pragma solidity >= 0.8.17;
 
+// import '@chainlink/contracts/src/v0.8/ChainlinkClient.sol';
+
 contract House {
     address payable private houseManager;
 
@@ -23,19 +25,21 @@ contract House {
     function getBalance() external view returns (uint) {
         return address(this).balance;
     }
+
+    function createBet(address bettor, uint payout) external returns (Bet) {
+        Bet bet = new Bet(bettor, payout, payable(address(this)));
+        return bet;
+    }
 }
 
-// allow user to pay with metamask -- then create bet after successful payment
-// set up nba api so bets automatically fulfill themselves (chainlink??)
-
+// contract Bet  is ChainlinkClient {
 contract Bet {
-    House house = House(payable(0xc194f6e5e5B6Df0B00407dD5438F1A30cd92c0a0));
-    string public name;
+    House house;
     address public bettor;
     uint public payout;
 
-    constructor (string memory name_, address bettor_, uint payout_) {
-        name = name_;
+    constructor (address bettor_, uint payout_, address payable house_) {
+        house = House(house_);
         bettor = bettor_;
         payout = payout_;
     }

@@ -1,13 +1,13 @@
 async function main() {  
-    // const House = await ethers.getContractFactory("House");
-    // const house = await House.deploy();
+    const House = await ethers.getContractFactory("House");
+    const house = await House.deploy();
 
-    // console.log("House address:", house.address);
+    console.log("House address:", house.address);
   
-    const Bet = await ethers.getContractFactory("Bet");
-    const bet = await Bet.deploy("test", '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266', 1000000000000000);
+    // const Bet = await ethers.getContractFactory("Bet");
+    // const bet = await Bet.deploy("test", '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266', 1000000000000000);
 
-    console.log("Bet address:", bet.address);
+    // console.log("Bet address:", bet.address);
 }
 
 main()

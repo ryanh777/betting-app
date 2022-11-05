@@ -3,19 +3,19 @@ require('dotenv').config();
 require("@nomiclabs/hardhat-ethers")
 require("@nomiclabs/hardhat-etherscan");
 
-const { API_URL, PRIVATE_KEY } = process.env;
+const { REACT_APP_API_URL, REACT_APP_PRIVATE_KEY } = process.env;
 
 module.exports = {
   solidity: "0.8.17",
   defaultNetwork: "goerli", 
-  // paths: {
-  //   artifacts: "./src/artifacts"
-  // },
+  paths: {
+    artifacts: "./src/artifacts"
+  },
   networks: {
     hardhat: {},
     goerli: {
-      url: API_URL,
-      accounts: [PRIVATE_KEY]
+      url: REACT_APP_API_URL,
+      accounts: [REACT_APP_PRIVATE_KEY]
     }
   },
   etherscan: {
